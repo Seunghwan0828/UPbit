@@ -2,7 +2,7 @@ import pyupbit
 import numpy as np
 
 # OHLCV(open, high, low, close, volume)로 당일 시가, 고가, 저가, 종가, 거래량에 대한 데이터
-df = pyupbit.get_ohlcv("KRW-BTC", count=7)
+df = pyupbit.get_ohlcv("KRW-XRP", count=7)
 
 # 변동성 돌파 기준 범위 계산, (고가 - 저가) * k값
 df['range'] = (df['high'] - df['low']) * 0.5
@@ -25,4 +25,4 @@ df['dd'] = (df['hpr'].cummax() - df['hpr']) / df['hpr'].cummax() * 100
 print("MDD(%): ", df['dd'].max())
 
 # excel로 변환
-df.to_excel("BTC.xlsx")
+df.to_excel("XRP.xlsx")
