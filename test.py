@@ -1,7 +1,7 @@
 import pyupbit
 
-access = "He3C69CTNB7OJ1H4vx0b07wLArly8AeB7zMltBrz"
-secret = "OdOgYm00kwKPjERpaHoUufGe1sCEo2WA57jz0RQD"
+access = "access"
+secret = "secret"
 upbit = pyupbit.Upbit(access, secret)
 
 btc = upbit.get_balance("KRW-BTC")

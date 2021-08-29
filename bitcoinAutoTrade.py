@@ -3,10 +3,10 @@ import pyupbit
 import datetime
 import requests
 
-access = "He3C69CTNB7OJ1H4vx0b07wLArly8AeB7zMltBrz"
-secret = "OdOgYm00kwKPjERpaHoUufGe1sCEo2WA57jz0RQD"
-myToken = "xoxb-2455740732864-2432119597634-FBuPalWO02hyTf96vPPN20bL"
-channel = "#alarm"
+access = "access"
+secret = "secret"
+myToken = "myToken"
+channel = "#"
 
 
 def post_message(token, channel, text):
