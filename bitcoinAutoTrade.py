@@ -5,16 +5,15 @@ import requests
 
 access = "He3C69CTNB7OJ1H4vx0b07wLArly8AeB7zMltBrz"
 secret = "OdOgYm00kwKPjERpaHoUufGe1sCEo2WA57jz0RQD"
-myToken = "xoxb-2455740732864-2432119597634-hb2CTuj0LM3PRAZZYxi04cxS"
-
+myToken = "xoxb-2455740732864-2432119597634-k0D7CyvuM4taQPxbU2txJKnk"
+channel = "#alarm"
 
 
 def post_message(token, channel, text):
     """슬랙 메시지 전송"""
-    response = requests.post("https://slack.com/api/chat.postMessage",
+    requests.post("https://slack.com/api/chat.postMessage",
         headers={"Authorization": "Bearer "+token},
-        data={"channel": channel,"text": text}
-    )
+        data={"channel": channel,"text": text})
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -53,7 +52,7 @@ def get_current_price(ticker):
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 # 시작 메세지 슬랙 전송
-post_message(myToken,"#alarm", "autotrade start")
+post_message(myToken, channel, "autotrade start")
 
 while True:
     try:
@@ -69,14 +68,15 @@ while True:
                 krw = get_balance("KRW")
                 if krw > 5000:
                     buy_result = upbit.buy_market_order("KRW-XRP", krw*0.9995)
-                    post_message(myToken,"#alarm", "XRP buy : " +str(buy_result))
+                    post_message(myToken, channel, "XRP buy : " +str(buy_result))
         else:
-            btc = get_balance("XRP")
-            if btc > 0.00008:
-                sell_result = upbit.sell_market_order("KRW-XRP", btc*0.9995)
-                post_message(myToken,"#alarm", "XRP buy : " +str(sell_result))
+            xrp = get_balance("XRP")
+            xrp_now = xrp * current_price
+            if xrp_now > 5000:
+                sell_result = upbit.sell_market_order("KRW-XRP", xrp*0.9995)
+                post_message(myToken, channel, "XRP sell : " +str(sell_result))
         time.sleep(1)
     except Exception as e:
         print(e)
-        post_message(myToken,"#alarm", e)
+        post_message(myToken, channel, e)
         time.sleep(1)
