@@ -3,10 +3,10 @@ import pyupbit
 import datetime
 import requests
 
-access = "access"
-secret = "secret"
-myToken = "myToken"
-channel = "#"
+access = ""
+secret = ""
+myToken = ""
+channel = ""
 
 
 def post_message(token, channel, text):
@@ -29,8 +29,8 @@ def get_start_time(ticker):
 
 def get_ma15(ticker):
     """15일 이동 평균선 조회"""
-    df = pyupbit.get_ohlcv(ticker, interval="hour", count=15*24)
-    ma15 = df['close'].rolling(15*24).mean().iloc[-1]
+    df = pyupbit.get_ohlcv(ticker, interval="hour", count=360)
+    ma15 = df['close'].rolling(360).mean().iloc[-1]
     return ma15
 
 def get_balance(ticker):
@@ -65,13 +65,13 @@ while True:
             ma15 = get_ma15("KRW-XRP")
             current_price = get_current_price("KRW-XRP")
             if (target_price < current_price) and (ma15 < current_price):
-                krw = get_balance("KRW")
+                krw = get_balance("XRP")
                 if krw > 5000:
                     buy_result = upbit.buy_market_order("KRW-XRP", krw*0.9990)
                     post_message(myToken, channel, "XRP buy : " +str(buy_result))
         else:
             xrp = get_balance("XRP")
-            xrp_now = xrp * current_price
+            xrp_now = xrp * get_current_price("KRW-XRP")
             if xrp_now > 5000:
                 sell_result = upbit.sell_market_order("KRW-XRP", xrp*0.9990)
                 post_message(myToken, channel, "XRP sell : " +str(sell_result))
